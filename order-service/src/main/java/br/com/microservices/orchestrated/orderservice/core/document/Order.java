@@ -24,5 +24,4 @@ public class Order {
     private String transactionId;
     private double totalAmount;
     private int totalItems;
-
 }

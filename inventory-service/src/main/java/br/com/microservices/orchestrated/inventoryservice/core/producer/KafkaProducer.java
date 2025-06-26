@@ -7,8 +7,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class KafkaProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
@@ -16,15 +16,12 @@ public class KafkaProducer {
     @Value("${spring.kafka.topic.orchestrator}")
     private String orchestratorTopic;
 
-
-
-    public void sendEvent(String payload){
-        try{
-            log.info("SagaProducer sending payload : {}", payload);
+    public void sendEvent(String payload) {
+        try {
+            log.info("Sending event to topic {} with data {}", orchestratorTopic, payload);
             kafkaTemplate.send(orchestratorTopic, payload);
-        }catch (Exception e){
-            log.error("Error trying to send data to topic {} with data {}", orchestratorTopic, payload);
+        } catch (Exception ex) {
+            log.error("Error trying to send data to topic {} with data {}", orchestratorTopic, payload, ex);
         }
     }
-
 }
