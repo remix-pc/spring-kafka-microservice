@@ -1,6 +1,5 @@
 package br.com.microservices.orchestrated.paymentservice.core.dto;
 
-
 import br.com.microservices.orchestrated.paymentservice.core.enums.ESagaStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,20 +19,18 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 public class Event {
 
     private String id;
-    private String transactionId;
     private String orderId;
+    private String transactionId;
     private Order payload;
     private String source;
     private ESagaStatus status;
     private List<History> eventHistory;
     private LocalDateTime createdAt;
 
-    public void addToHistory(History history){
-        if(isEmpty(eventHistory)){
+    public void addToHistory(History history) {
+        if (isEmpty(eventHistory)) {
             eventHistory = new ArrayList<>();
         }
         eventHistory.add(history);
     }
-    
-
 }

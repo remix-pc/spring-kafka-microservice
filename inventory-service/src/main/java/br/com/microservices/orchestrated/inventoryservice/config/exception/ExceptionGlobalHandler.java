@@ -1,6 +1,5 @@
 package br.com.microservices.orchestrated.inventoryservice.config.exception;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,10 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionGlobalHandler {
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<?> handleValidationException(ValidationException ex) {
-        var details = new ExceptionDetails(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+    public ResponseEntity<?> handleValidationException(ValidationException validationException) {
+        var details = new ExceptionDetails(HttpStatus.BAD_REQUEST.value(), validationException.getMessage());
         return new ResponseEntity<>(details, HttpStatus.BAD_REQUEST);
     }
-
 }
-

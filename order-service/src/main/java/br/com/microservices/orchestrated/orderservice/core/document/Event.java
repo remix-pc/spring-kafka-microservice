@@ -1,6 +1,5 @@
 package br.com.microservices.orchestrated.orderservice.core.document;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +26,4 @@ public class Event {
     private String status;
     private List<History> eventHistory;
     private LocalDateTime createdAt;
-
-
-
 }

@@ -20,45 +20,45 @@ public class EventService {
 
     private final EventRepository repository;
 
-    public Event save(Event event) {
-        return repository.save(event);
+    public void notifyEnding(Event event) {
+        event.setOrderId(event.getPayload().getId());
+        event.setCreatedAt(LocalDateTime.now());
+        save(event);
+        log.info("Order {} with saga notified! TransactionId: {}", event.getOrderId(), event.getTransactionId());
     }
 
-    public List<Event> findAll(){
+    public List<Event> findAll() {
         return repository.findAllByOrderByCreatedAtDesc();
     }
 
-    public Event findByFilters(EventFilters filters){
+    public Event findByFilters(EventFilters filters) {
         validateEmptyFilters(filters);
-        if(!isEmpty(filters.getOrderId())){
+        if (!isEmpty(filters.getOrderId())) {
             return findByOrderId(filters.getOrderId());
-        }else{
+        } else {
             return findByTransactionId(filters.getTransactionId());
         }
     }
 
-
-    private Event findByOrderId(String orderId){
-        return repository.findTop1ByOrderIdOrderByCreatedAtDesc(orderId)
-                .orElseThrow(() -> new ValidationException("Event not found by order id not found"));
-    }
-
-    private Event findByTransactionId(String transactionId){
-        return repository.findTop1ByTransactionIdOrderByCreatedAtDesc(transactionId)
-                .orElseThrow(() -> new ValidationException("Event not found by transaction id not found"));
-    }
-
-    private void validateEmptyFilters(EventFilters eventFilters){
-        if(isEmpty(eventFilters.getOrderId()) && isEmpty(eventFilters.getTransactionId())){
-            throw new ValidationException("OrderID or Transaction ID is required");
+    private void validateEmptyFilters(EventFilters filters) {
+        if (isEmpty(filters.getOrderId()) && isEmpty(filters.getTransactionId())) {
+            throw new ValidationException("OrderID or TransactionID must be informed.");
         }
     }
 
-    public void notifyEnding(Event event){
-      event.setOrderId(event.getOrderId());
-      event.setCreatedAt(LocalDateTime.now());
-      save(event);
-      log.info("Order {} with saga notified! TransactionId: {}", event.getOrderId(), event.getTransactionId());
+    private Event findByTransactionId(String transactionId) {
+        return repository
+            .findTop1ByTransactionIdOrderByCreatedAtDesc(transactionId)
+            .orElseThrow(() -> new ValidationException("Event not found by transactionId."));
     }
 
+    private Event findByOrderId(String orderId) {
+        return repository
+            .findTop1ByOrderIdOrderByCreatedAtDesc(orderId)
+            .orElseThrow(() -> new ValidationException("Event not found by orderID."));
+    }
+
+    public Event save(Event event) {
+        return repository.save(event);
+    }
 }

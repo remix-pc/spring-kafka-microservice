@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
 @Builder
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "validation")
 public class Validation {
 
@@ -37,15 +37,13 @@ public class Validation {
 
     @PrePersist
     public void prePersist() {
-        var now =  LocalDateTime.now();
+        var now = LocalDateTime.now();
         createdAt = now;
         updatedAt = now;
     }
-
 
     @PreUpdate
     public void preUpdate() {
         updatedAt = LocalDateTime.now();
     }
-
 }
