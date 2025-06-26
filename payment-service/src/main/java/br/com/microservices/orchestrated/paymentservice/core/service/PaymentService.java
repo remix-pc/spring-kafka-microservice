@@ -59,7 +59,6 @@ public class PaymentService {
         event.setStatus(ESagaStatus.SUCCESS);
         event.setSource(CURRENT_SOURCE);
         addHistory(event, "Payment realized successfully");
-
     }
 
 
